@@ -2,6 +2,7 @@ package exercise1;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import exercise2.WordLengthCount;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -60,6 +61,7 @@ public class WordCount {
 
 		job.setJarByClass(WordCount.class);
 		job.setMapperClass(TokenizerMapper.class);
+		job.setCombinerClass(IntSumReducer.class);
 		
 		if(args.length>2){
 			if(Integer.parseInt(args[2])>=0){

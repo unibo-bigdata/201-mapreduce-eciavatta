@@ -21,18 +21,29 @@ public class Ex4InvertedIndex {
 		private Text word = new Text();
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-			//TODO mapper code
+			StringTokenizer itr = new StringTokenizer(value.toString());
+			while (itr.hasMoreTokens()) {
+				word.set(itr.nextToken());
+				context.write(word, (LongWritable) key);
+			}
 		}
 	}
 
 	public static class Ex4Reducer extends Reducer<Text, LongWritable, Text, Text> {
 
+		private Text result = new Text();
+
 		public void reduce(Text key, Iterable<LongWritable> values, Context context)
 				throws IOException, InterruptedException {
 
-			TreeSet<Long> offsets = new TreeSet<Long>();
+			TreeSet<Long> offsets = new TreeSet<>();
 
-			//TODO reducer code
+			for (LongWritable value: values) {
+				offsets.add(value.get());
+			}
+
+			result.set(offsets.toString());
+			context.write(key, result);
 		}
 	}
 
